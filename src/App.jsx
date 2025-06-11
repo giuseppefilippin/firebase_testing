@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Auth } from "./components/auth";
-import { db } from "./config/firebase";
+import { db, auth } from "./config/firebase";
 import {
   getDocs,
   collection,
@@ -35,7 +35,10 @@ function App() {
 
   const onSubmitComent = async () => {
     try {
-      await addDoc(comentsCollectionRef, { coments: newComent });
+      await addDoc(comentsCollectionRef, {
+        coments: newComent,
+        userId: auth?.currentUser?.uid,
+      });
       getComentList();
     } catch (err) {
       console.error(err);
