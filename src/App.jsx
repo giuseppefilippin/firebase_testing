@@ -8,6 +8,7 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
   const [newComent, setNewComent] = useState("");
 
   const comentsCollectionRef = collection(db, "comentarios");
+
+  const [updatedComent, setUpdatedComent] = useState("");
 
   const getComentList = async () => {
     try {
@@ -42,6 +45,11 @@ function App() {
   const deleteComent = async (id) => {
     const comentDoc = doc(db, "comentarios", id);
     await deleteDoc(comentDoc);
+  };
+
+  const updateComent = async (id) => {
+    const comentDoc = doc(db, "comentarios", id);
+    await updateDoc(comentDoc, { coments: updatedComent });
   };
 
   useEffect(() => {
@@ -76,6 +84,12 @@ function App() {
           <div>
             <h1>{comentarios.coments}</h1>
             <button onClick={() => deleteComent(comentarios.id)}>Delete</button>
+
+            <input
+              placeholder="editar comentario"
+              onChange={(e) => setUpdatedComent(e.target.value)}
+            />
+            <button onClick={() => updateComent(comentarios.id)}>Update</button>
           </div>
         ))}
       </div>
